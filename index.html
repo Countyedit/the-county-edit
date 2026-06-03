@@ -3,6 +3,707 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's On — The County Edit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #F7F3EC;
+  --ivory: #FBF8F3;
+  --stone: #E6DDD0;
+  --mushroom: #D4C4B0;
+  --tan: #C4A882;
+  --champagne: #E8D9C0;
+  --olive: #6B7F5A;
+  --olive-dark: #4E5E42;
+  --olive-rich: #5C7048;
+  --clay: #A06448;
+  --espresso: #2A2018;
+  --warm-charcoal: #332820;
+  --dark-warm: #241C14;
+  --muted: #8A7D72;
+  --warm-white: #FAF7F2;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--warm-white); color: var(--warm-charcoal); font-weight: 300; overflow-x: hidden; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 68px; background: rgba(250,247,242,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,168,130,0.2); }
+.nav-logo { font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--espresso); text-decoration: none; }
+.nav-logo span { color: var(--olive-rich); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--espresso); }
+.nav-cta { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px 20px; background: var(--espresso); color: var(--cream); text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--dark-warm); }
+
+/* HERO */
+.hero { padding-top: 68px; background: var(--warm-charcoal); min-height: 48vh; display: flex; align-items: flex-end; position: relative; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 10% 40%, rgba(107,127,90,0.2) 0%, transparent 55%), radial-gradient(ellipse 50% 70% at 85% 20%, rgba(196,168,130,0.14) 0%, transparent 50%); }
+.hero-content { position: relative; z-index: 1; padding: 72px 64px; max-width: 760px; }
+.hero-eyebrow { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--tan); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+.hero-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--tan); opacity: 0.5; }
+.hero h1 { font-family: var(--serif); font-size: clamp(42px, 6vw, 72px); font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 16px; }
+.hero h1 em { font-style: italic; color: var(--champagne); }
+.hero-sub { font-size: 14px; line-height: 1.8; color: rgba(232,217,192,0.55); max-width: 480px; }
+
+/* FILTER BAR */
+.filter-bar { background: var(--espresso); padding: 0 64px; display: flex; align-items: center; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.06); overflow-x: auto; }
+.filter-btn { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,217,192,0.45); padding: 18px 22px; border: none; background: transparent; cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.2s; font-family: var(--sans); font-weight: 400; }
+.filter-btn:hover { color: rgba(232,217,192,0.8); }
+.filter-btn.active { color: var(--champagne); border-bottom-color: var(--olive-rich); }
+
+/* WEEKEND BANNER */
+.weekend-banner { background: var(--olive-rich); padding: 20px 64px; display: flex; align-items: center; justify-content: space-between; }
+.wb-left { display: flex; align-items: center; gap: 16px; }
+.wb-icon { font-size: 20px; }
+.wb-title { font-family: var(--serif); font-size: 18px; font-style: italic; color: white; }
+.wb-sub { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.wb-btn { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.35); padding: 9px 18px; transition: background 0.2s; white-space: nowrap; }
+.wb-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* MAIN LAYOUT */
+.main { padding: 72px 64px; }
+
+/* SECTION HEADER */
+.sec-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+.eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--olive-rich); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; font-weight: 400; }
+.eyebrow::after { content: ''; display: block; width: 28px; height: 1px; background: var(--olive-rich); }
+.sec-title { font-family: var(--serif); font-size: clamp(26px, 3vw, 38px); font-weight: 300; color: var(--espresso); line-height: 1.15; }
+.sec-title em { font-style: italic; }
+.see-all { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; white-space: nowrap; margin-bottom: 4px; }
+.see-all::after { content: '→'; }
+.see-all:hover { color: var(--espresso); }
+
+/* FEATURED EVENT — BIG CARD */
+.featured-event { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2px; margin-bottom: 56px; }
+.feat-img { aspect-ratio: 4/3; position: relative; overflow: hidden; background: linear-gradient(135deg, #8B6B40, #5C4525, #3A2C18); display: flex; align-items: flex-end; }
+.feat-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(42,32,24,0.85) 0%, rgba(42,32,24,0.1) 55%); }
+.feat-img-content { position: relative; z-index: 1; padding: 32px; }
+.feat-date-badge { display: inline-flex; flex-direction: column; align-items: center; background: var(--olive-rich); color: white; padding: 8px 14px; margin-bottom: 16px; }
+.feat-date-day { font-family: var(--serif); font-size: 32px; font-weight: 500; line-height: 1; }
+.feat-date-month { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+.feat-venue-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232,217,192,0.6); }
+
+/* Featured image decorative elements */
+.feat-img-deco { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.06; font-family: var(--serif); font-size: 140px; color: white; font-style: italic; pointer-events: none; }
+
+.feat-body { background: white; padding: 44px 40px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--stone); }
+.feat-tag { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--olive-rich); margin-bottom: 12px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.feat-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--olive-rich); }
+.feat-label { display: inline-block; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; background: var(--clay); color: white; padding: 4px 10px; margin-bottom: 16px; font-weight: 500; }
+.feat-title { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 36px); font-weight: 300; color: var(--espresso); line-height: 1.15; margin-bottom: 16px; }
+.feat-desc { font-size: 13px; line-height: 1.8; color: var(--muted); margin-bottom: 28px; flex: 1; }
+.feat-meta { display: flex; flex-direction: column; gap: 8px; padding: 20px 0; border-top: 1px solid var(--stone); border-bottom: 1px solid var(--stone); margin-bottom: 24px; }
+.feat-meta-item { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+.feat-meta-icon { width: 18px; height: 18px; background: var(--cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; color: var(--olive-rich); }
+.feat-actions { display: flex; gap: 10px; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--olive-rich); color: white; text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; transition: background 0.2s; }
+.btn-primary:hover { background: var(--olive-dark); }
+.btn-primary::after { content: '→'; }
+.btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: transparent; color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid var(--stone); transition: all 0.2s; }
+.btn-ghost:hover { border-color: var(--tan); color: var(--espresso); }
+
+/* EVENT GRID */
+.events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 64px; }
+.event-card { background: white; border: 1px solid var(--stone); text-decoration: none; display: block; transition: all 0.25s; overflow: hidden; }
+.event-card:hover { box-shadow: 0 8px 32px rgba(42,32,24,0.1); transform: translateY(-2px); border-color: var(--mushroom); }
+.event-img { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; display: flex; align-items: flex-end; }
+.event-img-bg { position: absolute; inset: 0; }
+.event-img-ov { position: absolute; inset: 0; background: linear-gradient(to top, rgba(42,32,24,0.7) 0%, transparent 50%); }
+.ev-bg-1 { background: linear-gradient(135deg, #7A5A3A, #4A3520); }
+.ev-bg-2 { background: linear-gradient(135deg, #4A6B5A, #2A4535); }
+.ev-bg-3 { background: linear-gradient(135deg, #6B4A5C, #3A2535); }
+.ev-bg-4 { background: linear-gradient(135deg, #5A6B4A, #354025); }
+.ev-bg-5 { background: linear-gradient(135deg, #6B5A3A, #403520); }
+.ev-bg-6 { background: linear-gradient(135deg, #4A5A6B, #253040); }
+.ev-bg-7 { background: linear-gradient(135deg, #6B4A3A, #402520); }
+.ev-bg-8 { background: linear-gradient(135deg, #3A6B5A, #204035); }
+.ev-bg-9 { background: linear-gradient(135deg, #5A4A6B, #302535); }
+.event-date-pill { position: absolute; top: 12px; left: 12px; background: var(--espresso); color: var(--champagne); padding: 5px 10px; z-index: 1; display: flex; align-items: baseline; gap: 4px; }
+.ev-day { font-family: var(--serif); font-size: 17px; font-weight: 500; }
+.ev-mon { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
+.event-feat-badge { position: absolute; top: 12px; right: 12px; background: var(--clay); color: white; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 7px; z-index: 1; }
+.event-body { padding: 18px 20px; }
+.event-tag { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan); margin-bottom: 6px; font-weight: 500; }
+.event-title { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--espresso); line-height: 1.25; margin-bottom: 8px; }
+.event-venue { font-size: 11px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+.event-venue::before { content: '◎'; color: var(--tan); font-size: 9px; }
+.event-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--stone); }
+.event-price { font-size: 12px; color: var(--muted); }
+.event-price strong { color: var(--espresso); font-weight: 500; }
+.event-arrow { font-size: 14px; color: var(--olive-rich); transition: transform 0.2s; }
+.event-card:hover .event-arrow { transform: translateX(4px); }
+
+/* VENUE SPOTLIGHT */
+.venue-section { background: var(--espresso); padding: 72px 64px; margin: 0 -64px; width: calc(100% + 128px); }
+.venue-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 40px; }
+.venue-card { background: rgba(255,255,255,0.05); padding: 28px 24px; text-decoration: none; display: block; transition: background 0.2s; border-left: 2px solid transparent; }
+.venue-card:hover { background: rgba(255,255,255,0.09); border-left-color: var(--olive-rich); }
+.venue-icon { font-size: 24px; margin-bottom: 14px; }
+.venue-name { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--cream); margin-bottom: 6px; line-height: 1.2; }
+.venue-type { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan); margin-bottom: 10px; font-weight: 500; }
+.venue-desc { font-size: 12px; line-height: 1.7; color: rgba(232,217,192,0.45); margin-bottom: 14px; }
+.venue-link { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--olive); display: flex; align-items: center; gap: 5px; }
+.venue-link::after { content: '→'; }
+
+/* MORE EVENTS LIST */
+.list-section { margin-top: 64px; }
+.events-list { display: flex; flex-direction: column; gap: 2px; }
+.list-item { background: white; padding: 20px 24px; display: flex; align-items: center; gap: 20px; text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; border: 1px solid var(--stone); }
+.list-item:hover { border-left-color: var(--olive-rich); box-shadow: 4px 0 20px rgba(42,32,24,0.06); transform: translateX(3px); }
+.li-date { text-align: center; min-width: 52px; }
+.li-day { font-family: var(--serif); font-size: 22px; font-weight: 300; color: var(--espresso); line-height: 1; }
+.li-mon { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tan); }
+.li-divider { width: 1px; height: 40px; background: var(--stone); flex-shrink: 0; }
+.li-info { flex: 1; }
+.li-tag { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan); margin-bottom: 3px; }
+.li-title { font-family: var(--serif); font-size: 17px; font-weight: 400; color: var(--espresso); }
+.li-venue { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.li-price { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.li-arrow { color: var(--tan); font-size: 16px; transition: transform 0.2s; }
+.list-item:hover .li-arrow { transform: translateX(4px); }
+
+/* SUBMIT EVENT */
+.submit-banner { background: var(--cream); border: 1px solid var(--stone); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-top: 48px; }
+.sb-left .eyebrow { margin-bottom: 8px; }
+.sb-title { font-family: var(--serif); font-size: 24px; font-weight: 300; color: var(--espresso); margin-bottom: 8px; }
+.sb-desc { font-size: 13px; line-height: 1.7; color: var(--muted); max-width: 440px; }
+.sb-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: var(--espresso); color: var(--cream); text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; white-space: nowrap; transition: background 0.2s; }
+.sb-btn:hover { background: var(--dark-warm); }
+.sb-btn::after { content: '→'; font-size: 14px; }
+
+/* NEWSLETTER */
+.nl-strip { background: var(--olive-rich); padding: 48px 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; margin: 64px -64px 0; width: calc(100% + 128px); }
+.nl-text .nl-title { font-family: var(--serif); font-size: 24px; font-style: italic; color: white; margin-bottom: 4px; }
+.nl-text .nl-sub { font-size: 12px; color: rgba(255,255,255,0.65); }
+.nl-form { display: flex; gap: 0; flex-shrink: 0; }
+.nl-input { padding: 12px 18px; border: none; outline: none; font-family: var(--sans); font-size: 13px; color: var(--espresso); background: white; min-width: 260px; }
+.nl-input::placeholder { color: var(--muted); }
+.nl-submit { padding: 12px 22px; background: var(--espresso); border: none; cursor: pointer; color: white; font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; white-space: nowrap; transition: background 0.2s; }
+.nl-submit:hover { background: var(--dark-warm); }
+
+/* FOOTER */
+footer { background: var(--dark-warm); padding: 64px 64px 36px; }
+.ft-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(232,217,192,0.08); margin-bottom: 28px; }
+.ft-logo { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--cream); display: block; margin-bottom: 8px; }
+.ft-logo span { color: var(--olive); }
+.ft-tagline { font-family: var(--serif); font-size: 14px; font-style: italic; color: rgba(232,217,192,0.38); margin-bottom: 14px; }
+.ft-brand p { font-size: 12px; line-height: 1.8; color: rgba(232,217,192,0.28); max-width: 240px; }
+.ft-col h4 { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tan); margin-bottom: 18px; font-weight: 400; }
+.ft-col ul { list-style: none; }
+.ft-col li { margin-bottom: 9px; }
+.ft-col a { font-size: 13px; color: rgba(232,217,192,0.32); text-decoration: none; transition: color 0.2s; }
+.ft-col a:hover { color: rgba(232,217,192,0.65); }
+.ft-bot { display: flex; justify-content: space-between; align-items: center; }
+.ft-copy { font-size: 11px; color: rgba(232,217,192,0.2); }
+.ft-legal { display: flex; gap: 20px; list-style: none; }
+.ft-legal a { font-size: 11px; color: rgba(232,217,192,0.2); text-decoration: none; }
+
+/* FADE UP */
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media(max-width:1100px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero-content { padding: 60px 24px; }
+  .filter-bar { padding: 0 24px; }
+  .weekend-banner { padding: 18px 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .main { padding: 48px 24px; }
+  .featured-event { grid-template-columns: 1fr; }
+  .events-grid { grid-template-columns: 1fr 1fr; }
+  .venue-grid { grid-template-columns: 1fr 1fr; }
+  .venue-section { margin: 0 -24px; width: calc(100% + 48px); padding: 48px 24px; }
+  .nl-strip { margin: 48px -24px 0; width: calc(100% + 48px); padding: 40px 24px; flex-direction: column; }
+  .nl-input { min-width: 200px; }
+  footer { padding: 48px 24px 32px; }
+  .ft-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .submit-banner { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+}
+@media(max-width:640px) {
+  .events-grid { grid-template-columns: 1fr; }
+  .venue-grid { grid-template-columns: 1fr; }
+  .ft-top { grid-template-columns: 1fr; }
+  .ft-bot { flex-direction: column; gap: 12px; }
+  .list-item { flex-wrap: wrap; }
+  .nl-form { flex-direction: column; width: 100%; }
+  .nl-input { min-width: unset; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">The County <span>Edit</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Businesses</a></li>
+    <li><a href="whats-on.html" class="active">What's On</a></li>
+    <li><a href="#">Guides</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="index.html#join" class="nav-cta">List Your Business</a>
+</nav>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Rutland &amp; Stamford</div>
+    <h1>What's happening<br><em>locally.</em></h1>
+    <p class="hero-sub">Everything worth doing, all in one place. From great estates and open air theatre to supper clubs, art exhibitions and seasonal markets, curated for you.</p>
+  </div>
+</section>
+
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active">All Events</button>
+  <button class="filter-btn">This Weekend</button>
+  <button class="filter-btn">Music &amp; Arts</button>
+  <button class="filter-btn">Food &amp; Drink</button>
+  <button class="filter-btn">Family</button>
+  <button class="filter-btn">Sport &amp; Fitness</button>
+  <button class="filter-btn">Workshops</button>
+  <button class="filter-btn">Seasonal</button>
+</div>
+
+
+<!-- WEEKEND BANNER -->
+<div class="weekend-banner">
+  <div class="wb-left">
+    <div class="wb-icon">📅</div>
+    <div>
+      <div class="wb-title">What's On This Weekend in Rutland &amp; Stamford</div>
+      <div class="wb-sub">Updated every Thursday, never miss a thing</div>
+    </div>
+  </div>
+  <a href="#" class="wb-btn">See This Weekend →</a>
+</div>
+
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FEATURED EVENT -->
+  <section class="fade-up" style="margin-bottom:64px;">
+    <div class="sec-hdr">
+      <div>
+        <div class="eyebrow">Editor's Pick</div>
+        <h2 class="sec-title">Not to be <em>missed.</em></h2>
+      </div>
+    </div>
+
+    <div class="featured-event">
+      <div class="feat-img">
+        <div class="feat-img-deco">♞</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(160deg,#8B6030,#5C3A18,#3A2410);"></div>
+        <div class="feat-img-overlay"></div>
+        <div class="feat-img-content">
+          <div class="feat-date-badge">
+            <span class="feat-date-day">4</span>
+            <span class="feat-date-month">Sep</span>
+          </div>
+          <div class="feat-venue-tag">Burghley House, Stamford</div>
+        </div>
+      </div>
+      <div class="feat-body">
+        <div>
+          <div class="feat-tag">Sport &amp; Country</div>
+          <span class="feat-label">Flagship Event</span>
+          <h2 class="feat-title">Defender Burghley Horse Trials 2026</h2>
+          <p class="feat-desc">The world's most prestigious equestrian event returns to the magnificent grounds of Burghley House. Four days of world-class three-day eventing, set against one of England's greatest Elizabethan houses. A Rutland institution and one of the great sporting occasions in the British calendar.</p>
+          <div class="feat-meta">
+            <div class="feat-meta-item"><div class="feat-meta-icon">📅</div>4–7 September 2026</div>
+            <div class="feat-meta-item"><div class="feat-meta-icon">◎</div>Burghley House, Stamford, PE9 3JY</div>
+            <div class="feat-meta-item"><div class="feat-meta-icon">£</div>Tickets from £25 · burghley.co.uk</div>
+          </div>
+        </div>
+        <div class="feat-actions">
+          <a href="https://burghley.co.uk" target="_blank" class="btn-primary">Book Tickets</a>
+          <a href="#" class="btn-ghost">Add to Calendar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMING UP -->
+  <section class="fade-up" style="margin-bottom:64px;">
+    <div class="sec-hdr">
+      <div>
+        <div class="eyebrow">Summer 2026</div>
+        <h2 class="sec-title">Coming up <em>this season.</em></h2>
+      </div>
+      <a href="#" class="see-all">All Events</a>
+    </div>
+
+    <div class="events-grid">
+
+      <a href="https://burghley.co.uk" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-2"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">5</span><span class="ev-mon">Jun</span></div>
+          <span class="event-feat-badge">Featured</span>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Music &amp; Live Events</div>
+          <div class="event-title">Adventure Cinema at Burghley Gardens</div>
+          <div class="event-venue">Burghley House, Stamford</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£18pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://nevillholtfestival.com" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-3"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">20</span><span class="ev-mon">Jun</span></div>
+          <span class="event-feat-badge">Festival</span>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Arts &amp; Culture</div>
+          <div class="event-title">Nevill Holt Opera Summer Festival</div>
+          <div class="event-venue">Nevill Holt, Market Harborough</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£45pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://tolethorpe.co.uk" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-4"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">25</span><span class="ev-mon">Jun</span></div>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Theatre</div>
+          <div class="event-title">Open Air Theatre Season at Tolethorpe Hall</div>
+          <div class="event-venue">Tolethorpe Hall, Rutland</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£20pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.belvoircastle.com" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-5"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">12</span><span class="ev-mon">Jul</span></div>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Country &amp; Outdoor</div>
+          <div class="event-title">Summer at Belvoir Castle</div>
+          <div class="event-venue">Belvoir Castle, Grantham</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£15pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.stamfordartscentre.com/whats-on/" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-6"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">5</span><span class="ev-mon">Jul</span></div>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Workshops &amp; Creative</div>
+          <div class="event-title">Summer Floristry &amp; Arts Workshops</div>
+          <div class="event-venue">Stamford Arts Centre</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£35pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://rockinghamcastle.com" target="_blank" class="event-card">
+        <div class="event-img">
+          <div class="event-img-bg ev-bg-7"></div>
+          <div class="event-img-ov"></div>
+          <div class="event-date-pill"><span class="ev-day">19</span><span class="ev-mon">Jul</span></div>
+        </div>
+        <div class="event-body">
+          <div class="event-tag">Heritage &amp; History</div>
+          <div class="event-title">Open Days at Rockingham Castle</div>
+          <div class="event-venue">Rockingham Castle, Corby</div>
+          <div class="event-footer">
+            <span class="event-price">From <strong>£12pp</strong></span>
+            <span class="event-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- VENUE SPOTLIGHT -->
+  <section class="venue-section fade-up">
+    <div class="sec-hdr" style="margin-bottom:0;">
+      <div>
+        <div class="eyebrow" style="color:var(--champagne);opacity:0.7;">Local Venues</div>
+        <div class="eyebrow" style="display:none;"></div>
+        <h2 class="sec-title" style="color:var(--cream);">Places worth <em>knowing about.</em></h2>
+      </div>
+      <a href="#" class="see-all" style="color:rgba(232,217,192,0.45);">All Venues</a>
+    </div>
+
+    <div class="venue-grid">
+      <a href="https://burghley.co.uk" target="_blank" class="venue-card">
+        <div class="venue-icon">🏰</div>
+        <div class="venue-name">Burghley House</div>
+        <div class="venue-type">Historic Estate, Stamford</div>
+        <div class="venue-desc">England's greatest Elizabethan house. Events, gardens, horse trials and seasonal programmes throughout the year.</div>
+        <div class="venue-link">View Events</div>
+      </a>
+      <a href="https://www.belvoircastle.com" target="_blank" class="venue-card">
+        <div class="venue-icon">🏯</div>
+        <div class="venue-name">Belvoir Castle</div>
+        <div class="venue-type">Historic Estate, Grantham</div>
+        <div class="venue-desc">A spectacular castle with year-round events, shoots, tours and seasonal celebrations in beautiful Vale of Belvoir.</div>
+        <div class="venue-link">View Events</div>
+      </a>
+      <a href="https://tolethorpe.co.uk" target="_blank" class="venue-card">
+        <div class="venue-icon">🎭</div>
+        <div class="venue-name">Tolethorpe Hall</div>
+        <div class="venue-type">Open Air Theatre, Rutland</div>
+        <div class="venue-desc">Rutland's beloved open air theatre. Summer season of Shakespeare and classic drama in beautiful woodland grounds.</div>
+        <div class="venue-link">View Productions</div>
+      </a>
+      <a href="https://nevillholtfestival.com" target="_blank" class="venue-card">
+        <div class="venue-icon">🎶</div>
+        <div class="venue-name">Nevill Holt Opera</div>
+        <div class="venue-type">Opera Festival, Market Harborough</div>
+        <div class="venue-desc">World-class opera in a stunning rural setting. An intimate and extraordinary annual summer festival.</div>
+        <div class="venue-link">View Festival</div>
+      </a>
+      <a href="https://www.stamfordartscentre.com" target="_blank" class="venue-card">
+        <div class="venue-icon">🎨</div>
+        <div class="venue-name">Stamford Arts Centre</div>
+        <div class="venue-type">Arts Venue, Stamford</div>
+        <div class="venue-desc">Theatre, live music, film, exhibitions and creative workshops in the heart of Stamford.</div>
+        <div class="venue-link">What's On</div>
+      </a>
+      <a href="https://rockinghamcastle.com" target="_blank" class="venue-card">
+        <div class="venue-icon">⚔️</div>
+        <div class="venue-name">Rockingham Castle</div>
+        <div class="venue-type">Historic Castle, Corby</div>
+        <div class="venue-desc">900 years of history. Open days, events and seasonal programmes at this remarkable working castle.</div>
+        <div class="venue-link">View Events</div>
+      </a>
+      <a href="https://rutlandcountymuseum.org.uk" target="_blank" class="venue-card">
+        <div class="venue-icon">🏛️</div>
+        <div class="venue-name">Rutland County Museum</div>
+        <div class="venue-type">Museum, Oakham</div>
+        <div class="venue-desc">Celebrating Rutland's remarkable history. Exhibitions, talks and family events throughout the year.</div>
+        <div class="venue-link">What's On</div>
+      </a>
+      <a href="https://www.rutlandgallery.com" target="_blank" class="venue-card">
+        <div class="venue-icon">🖼️</div>
+        <div class="venue-name">Rutland Gallery</div>
+        <div class="venue-type">Art Gallery, Uppingham</div>
+        <div class="venue-desc">Contemporary fine art in the heart of Uppingham. Regular exhibitions showcasing established and emerging artists.</div>
+        <div class="venue-link">Current Exhibition</div>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- MORE EVENTS LIST -->
+  <section class="list-section fade-up">
+    <div class="sec-hdr">
+      <div>
+        <div class="eyebrow">Coming Up</div>
+        <h2 class="sec-title">More local <em>events.</em></h2>
+      </div>
+      <a href="#" class="see-all">Full Calendar</a>
+    </div>
+
+    <div class="events-list">
+      <a href="https://www.loveuppingham.org.uk/whats-on/" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">14</div><div class="li-mon">Jun</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Community</div>
+          <div class="li-title">Uppingham Summer Market</div>
+          <div class="li-venue">Uppingham Town Centre</div>
+        </div>
+        <span class="li-price">Free entry</span>
+        <span class="li-arrow">→</span>
+      </a>
+
+      <a href="https://oakham.nub.news/whats-on" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">21</div><div class="li-mon">Jun</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Music</div>
+          <div class="li-title">Midsummer Concerts, Oakham</div>
+          <div class="li-venue">Oakham Town Centre</div>
+        </div>
+        <span class="li-price">Free entry</span>
+        <span class="li-arrow">→</span>
+      </a>
+
+      <a href="https://www.rutlandnursery.co.uk" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">28</div><div class="li-mon">Jun</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Garden &amp; Outdoors</div>
+          <div class="li-title">Summer Planting Workshop</div>
+          <div class="li-venue">Rutland Nursery, Oakham</div>
+        </div>
+        <span class="li-price">From £25pp</span>
+        <span class="li-arrow">→</span>
+      </a>
+
+      <a href="https://www.rutlandgallery.com" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">5</div><div class="li-mon">Jul</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Art &amp; Exhibitions</div>
+          <div class="li-title">Summer Exhibition Opening, Rutland Gallery</div>
+          <div class="li-venue">Rutland Gallery, Uppingham</div>
+        </div>
+        <span class="li-price">Free entry</span>
+        <span class="li-arrow">→</span>
+      </a>
+
+      <a href="https://www.uppingham.co.uk/life/theatre" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">12</div><div class="li-mon">Jul</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Theatre</div>
+          <div class="li-title">Uppingham Theatre Summer Programme</div>
+          <div class="li-venue">Uppingham School Theatre</div>
+        </div>
+        <span class="li-price">From £15pp</span>
+        <span class="li-arrow">→</span>
+      </a>
+
+      <a href="https://thecorecorby.com" target="_blank" class="list-item">
+        <div class="li-date"><div class="li-day">19</div><div class="li-mon">Jul</div></div>
+        <div class="li-divider"></div>
+        <div class="li-info">
+          <div class="li-tag">Arts &amp; Entertainment</div>
+          <div class="li-title">Summer Season at The Core, Corby</div>
+          <div class="li-venue">The Core, Corby</div>
+        </div>
+        <span class="li-price">From £12pp</span>
+        <span class="li-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- SUBMIT EVENT BANNER -->
+  <div class="submit-banner fade-up">
+    <div class="sb-left">
+      <div class="eyebrow">Got Something On?</div>
+      <div class="sb-title">Submit your event to The County Edit</div>
+      <p class="sb-desc">Running a supper club, workshop, exhibition, market or local event? Get it in front of the right people. Submit your event and we'll consider it for the What's On calendar.</p>
+    </div>
+    <a href="#" class="sb-btn">Submit Your Event</a>
+  </div>
+
+  <!-- NEWSLETTER STRIP -->
+  <div class="nl-strip fade-up">
+    <div class="nl-text">
+      <div class="nl-title">What's On This Weekend — every Thursday in your inbox.</div>
+      <div class="nl-sub">Join locals who never miss a thing. No spam, just the best of local life.</div>
+    </div>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="Your email address">
+      <button class="nl-submit">Subscribe</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <span class="ft-logo">The County <span>Edit</span></span>
+      <div class="ft-tagline">One place for local life.</div>
+      <p>Trusted local businesses, events, offers &amp; more, beautifully curated for Rutland &amp; Stamford.</p>
+    </div>
+    <div class="ft-col">
+      <h4>Discover</h4>
+      <ul>
+        <li><a href="#">Home &amp; Property</a></li>
+        <li><a href="#">Beauty &amp; Wellness</a></li>
+        <li><a href="#">Weddings &amp; Events</a></li>
+        <li><a href="#">Food &amp; Drink</a></li>
+        <li><a href="#">All Categories</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>What's On</h4>
+      <ul>
+        <li><a href="#">This Weekend</a></li>
+        <li><a href="#">All Events</a></li>
+        <li><a href="#">Submit an Event</a></li>
+        <li><a href="#">Seasonal Guides</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>About</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="#">List Your Business</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <p class="ft-copy">© 2026 The County Edit, Rutland &amp; Stamford, All rights reserved.</p>
+    <ul class="ft-legal"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Cookies</a></li></ul>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*60); obs.unobserve(e.target); }
+    });
+  },{threshold:0.06});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The County Edit, One place for local life</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
