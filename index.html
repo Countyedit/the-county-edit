@@ -3,6 +3,633 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The County Edit, One place for local life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  /* Warmed-up palette, espresso + mushroom + rich olive */
+  --cream: #F7F3EC;
+  --ivory: #FBF8F3;
+  --stone: #E6DDD0;
+  --mushroom: #D4C4B0;
+  --tan: #C4A882;
+  --champagne: #E8D9C0;
+  --olive: #6B7F5A;
+  --olive-dark: #4E5E42;
+  --olive-rich: #5C7048;
+  --clay: #A06448;
+  --espresso: #2A2018;
+  --warm-charcoal: #332820;
+  --dark-warm: #241C14;
+  --muted: #8A7D72;
+  --warm-white: #FAF7F2;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--warm-white); color: var(--warm-charcoal); font-weight: 300; overflow-x: hidden; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 68px; background: rgba(250,247,242,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(196,168,130,0.2); }
+.nav-logo { font-family: var(--serif); font-size: 21px; font-weight: 500; color: var(--espresso); text-decoration: none; }
+.nav-logo span { color: var(--olive-rich); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--espresso); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-events { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive-rich); text-decoration: none; }
+.nav-cta { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px 20px; background: var(--espresso); color: var(--cream); text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--dark-warm); }
+
+/* HERO */
+.hero { min-height: 92vh; padding-top: 68px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; background: var(--espresso); text-align: center; }
+.hero-bg { position: absolute; inset: 0; background:
+  radial-gradient(ellipse 70% 55% at 15% 40%, rgba(107,127,90,0.22) 0%, transparent 60%),
+  radial-gradient(ellipse 55% 70% at 85% 25%, rgba(196,168,130,0.16) 0%, transparent 55%),
+  radial-gradient(ellipse 45% 45% at 55% 85%, rgba(160,100,72,0.12) 0%, transparent 50%),
+  radial-gradient(ellipse 100% 100% at 50% 50%, rgba(42,32,24,0.4) 0%, transparent 100%); }
+.hero-content { position: relative; z-index: 1; max-width: 760px; padding: 0 24px; }
+.hero-loc { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 28px; }
+.hero-loc::before, .hero-loc::after { content: ''; display: block; width: 24px; height: 1px; background: var(--tan); opacity: 0.6; }
+.hero-h1 { font-family: var(--serif); font-size: clamp(54px, 8vw, 96px); font-weight: 300; line-height: 1.0; color: var(--cream); margin-bottom: 8px; }
+.hero-h1 em { font-style: italic; color: var(--champagne); display: block; }
+/* TAGLINE, bold and unmissable */
+.hero-sub { font-family: var(--serif); font-size: clamp(18px, 2.4vw, 26px); font-weight: 400; font-style: italic; color: var(--champagne); margin-bottom: 52px; letter-spacing: 0.01em; opacity: 1; }
+.hero-search { background: white; display: flex; align-items: stretch; max-width: 640px; margin: 0 auto 24px; box-shadow: 0 20px 60px rgba(42,32,24,0.4); }
+.sf { flex: 1; display: flex; flex-direction: column; padding: 14px 20px; border-right: 1px solid var(--stone); }
+.sf-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-bottom: 3px; }
+.sf-input { border: none; outline: none; font-family: var(--sans); font-size: 14px; color: var(--espresso); background: transparent; width: 100%; }
+.sf-input::placeholder { color: #B8A898; }
+.search-btn { padding: 0 28px; background: var(--olive-rich); border: none; cursor: pointer; color: white; font-family: var(--sans); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; transition: background 0.2s; white-space: nowrap; }
+.search-btn:hover { background: var(--olive-dark); }
+.hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.hero-tag { font-size: 11px; letter-spacing: 0.06em; color: rgba(212,196,176,0.55); padding: 6px 14px; border: 1px solid rgba(196,168,130,0.22); cursor: pointer; transition: all 0.2s; text-decoration: none; }
+.hero-tag:hover { background: rgba(255,255,255,0.07); color: rgba(212,196,176,0.9); border-color: rgba(196,168,130,0.45); }
+.hero-scroll { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); color: rgba(196,168,130,0.35); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 6px; animation: bob 2s ease-in-out infinite; }
+.hero-scroll::after { content: '↓'; font-size: 16px; }
+@keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
+
+/* SHARED */
+.sec { padding: 88px 64px; }
+.eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--olive-rich); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-weight: 400; }
+.eyebrow::after { content:''; display:block; width:32px; height:1px; background:var(--olive-rich); }
+.sec-title { font-family: var(--serif); font-size: clamp(30px,3.5vw,46px); font-weight: 300; line-height: 1.15; color: var(--espresso); }
+.sec-title em { font-style: italic; }
+.sec-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 48px; }
+.see-all { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; white-space: nowrap; margin-bottom: 4px; }
+.see-all::after { content:'→'; }
+.see-all:hover { color: var(--espresso); }
+.fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* CATEGORIES */
+.cat-sec { background: var(--ivory); }
+.cat-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+.cat-card { background: white; padding: 24px 20px; text-decoration: none; display: flex; flex-direction: column; border: 1px solid var(--stone); transition: all 0.25s; position: relative; overflow: hidden; }
+.cat-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--olive-rich); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.cat-card:hover { border-color: var(--mushroom); box-shadow: 0 4px 20px rgba(42,32,24,0.08); transform: translateY(-2px); }
+.cat-card:hover::after { transform: scaleX(1); }
+.cat-icon { font-size: 22px; margin-bottom: 12px; }
+.cat-name { font-family: var(--serif); font-size: 17px; font-weight: 400; color: var(--espresso); margin-bottom: 4px; }
+.cat-count { font-size: 11px; color: var(--muted); }
+
+/* WHAT'S ON */
+.wo-sec { background: var(--warm-charcoal); padding: 88px 64px; }
+.wo-eyebrow { color: var(--champagne) !important; }
+.wo-eyebrow::after { background: var(--champagne) !important; }
+.wo-title { color: var(--cream) !important; }
+.weekend-bar { background: var(--olive-rich); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.wb-text { font-family: var(--serif); font-size: 20px; color: white; font-style: italic; }
+.wb-sub { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 3px; }
+.wb-btn { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.38); padding: 9px 18px; transition: background 0.2s; white-space: nowrap; }
+.wb-btn:hover { background: rgba(255,255,255,0.12); }
+.ev-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 2px; }
+.ev-card { background: rgba(255,255,255,0.05); text-decoration: none; display: block; transition: background 0.2s; }
+.ev-card:hover { background: rgba(255,255,255,0.09); }
+.ev-img { width:100%; aspect-ratio:16/9; position:relative; overflow:hidden; }
+.ev-card:first-child .ev-img { aspect-ratio:4/3; }
+.ev-ph { position:absolute; inset:0; }
+.ep1 { background: linear-gradient(135deg,#9E7850,#6B5035); }
+.ep2 { background: linear-gradient(135deg,#5A7A5C,#3D5540); }
+.ep3 { background: linear-gradient(135deg,#7A5A6B,#553E4B); }
+.ev-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(42,32,24,.85) 0%,transparent 55%); }
+.ev-date { position:absolute; top:14px; left:14px; background:var(--olive-rich); color:white; padding:6px 10px; text-align:center; z-index:1; }
+.ev-day { font-family:var(--serif); font-size:22px; font-weight:500; line-height:1; display:block; }
+.ev-mon { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; display:block; margin-top:1px; }
+.ev-feat { position:absolute; top:14px; right:14px; background:var(--clay); color:white; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; padding:4px 9px; z-index:1; }
+.ev-body { padding: 20px; }
+.ev-tag { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--champagne); margin-bottom:6px; font-weight:500; }
+.ev-name { font-family:var(--serif); font-size:19px; font-weight:400; color:var(--cream); line-height:1.2; margin-bottom:8px; }
+.ev-card:first-child .ev-name { font-size:24px; }
+.ev-meta { font-size:12px; color:rgba(232,217,192,0.45); display:flex; flex-direction:column; gap:3px; }
+.ev-meta span { display:flex; align-items:center; gap:6px; }
+.ev-meta span::before { content:''; width:4px; height:4px; background:var(--olive); border-radius:50%; flex-shrink:0; }
+.wo-footer { margin-top:28px; display:flex; align-items:center; justify-content:space-between; padding-top:24px; border-top:1px solid rgba(255,255,255,0.08); }
+.wo-footer-q { font-family:var(--serif); font-size:17px; font-style:italic; color:rgba(232,217,192,0.3); }
+.wo-footer-a { font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--champagne); text-decoration:none; border-bottom:1px solid rgba(232,217,192,0.25); padding-bottom:4px; transition:border-color 0.2s; display:flex; align-items:center; gap:6px; }
+.wo-footer-a::after { content:'→'; }
+.wo-footer-a:hover { border-color:var(--champagne); }
+
+/* BUSINESSES */
+.biz-sec { background: white; }
+.biz-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+.biz-card { text-decoration:none; display:block; background:var(--ivory); border:1px solid var(--stone); transition:all 0.25s; overflow:hidden; }
+.biz-card:hover { box-shadow:0 8px 32px rgba(42,32,24,0.1); transform:translateY(-2px); border-color:var(--mushroom); }
+.biz-img { width:100%; aspect-ratio:3/2; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:28px; font-style:italic; color:rgba(255,255,255,0.22); }
+.bi1{background:linear-gradient(135deg,#C8A87A,#9E7850)} .bi2{background:linear-gradient(135deg,#7A9E7A,#4E6B4E)} .bi3{background:linear-gradient(135deg,#A07A9E,#6B4E6B)} .bi4{background:linear-gradient(135deg,#9E9A7A,#6B674E)} .bi5{background:linear-gradient(135deg,#7A9EA0,#4E6B6E)} .bi6{background:linear-gradient(135deg,#C8A07A,#9E6E50)}
+.biz-body { padding:22px; }
+.badges { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+.badge { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; padding:4px 8px; font-weight:500; }
+.b-feat{background:var(--olive-rich);color:white} .b-prem{background:var(--espresso);color:var(--champagne)} .b-new{background:var(--stone);color:var(--warm-charcoal)} .b-verif{background:transparent;border:1px solid var(--olive-rich);color:var(--olive-rich)}
+.biz-cat { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--tan); margin-bottom:5px; }
+.biz-name { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--espresso); margin-bottom:6px; line-height:1.2; }
+.biz-desc { font-size:12px; line-height:1.7; color:var(--muted); margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.avail { font-size:9px; letter-spacing:0.08em; color:var(--clay); background:rgba(160,100,72,0.09); padding:3px 8px; display:inline-block; margin-bottom:10px; }
+.biz-foot { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--stone); }
+.biz-loc { font-size:11px; color:var(--muted); display:flex; align-items:center; gap:4px; }
+.biz-loc::before { content:'◎'; color:var(--tan); font-size:9px; }
+.biz-enq { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--olive-rich); font-weight:500; display:flex; align-items:center; gap:4px; }
+.biz-enq::after { content:'→'; }
+
+/* NEWLY ADDED */
+.new-sec { background:var(--stone); }
+.new-list { display:flex; flex-direction:column; gap:2px; }
+.new-item { background:white; padding:20px 26px; display:flex; align-items:center; gap:20px; text-decoration:none; transition:all 0.2s; border-left:3px solid transparent; }
+.new-item:hover { border-left-color:var(--olive-rich); box-shadow:4px 0 20px rgba(42,32,24,0.07); transform:translateX(4px); }
+.ni-num { font-family:var(--serif); font-size:26px; font-weight:300; color:var(--mushroom); min-width:32px; }
+.ni-icon { width:44px; height:44px; background:var(--ivory); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.ni-info { flex:1; }
+.ni-cat { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--tan); margin-bottom:2px; }
+.ni-name { font-family:var(--serif); font-size:18px; font-weight:400; color:var(--espresso); }
+.ni-loc { font-size:11px; color:var(--muted); margin-top:2px; }
+.ni-badge { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:var(--olive-rich); color:white; padding:4px 10px; white-space:nowrap; }
+.ni-arrow { color:var(--tan); font-size:18px; transition:transform 0.2s; }
+.new-item:hover .ni-arrow { transform:translateX(4px); }
+
+/* SEASONAL */
+.seas-sec { background:var(--warm-white); }
+.seas-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+.seas-card { position:relative; overflow:hidden; aspect-ratio:3/4; text-decoration:none; display:block; }
+.seas-bg { position:absolute; inset:0; transition:transform 0.6s ease; }
+.seas-card:hover .seas-bg { transform:scale(1.05); }
+.sg1{background:linear-gradient(160deg,#D4B080,#A07840,#7A5820)} .sg2{background:linear-gradient(160deg,#90B090,#5A805A,#386038)} .sg3{background:linear-gradient(160deg,#C0A890,#88705A,#605040)} .sg4{background:linear-gradient(160deg,#A0B8C8,#6080A0,#405878)}
+.seas-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(42,32,24,.85) 0%,rgba(42,32,24,.05) 55%); }
+.seas-info { position:absolute; bottom:0; left:0; right:0; padding:24px; }
+.seas-tag { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(232,217,192,.7); margin-bottom:8px; font-weight:500; }
+.seas-title { font-family:var(--serif); font-size:21px; font-weight:300; color:white; line-height:1.2; margin-bottom:5px; }
+.seas-desc { font-size:11px; color:rgba(255,255,255,.45); line-height:1.5; }
+
+/* JOIN */
+.join-sec { background:var(--espresso); padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.j-eyebrow { color:var(--champagne) !important; }
+.j-eyebrow::after { background:var(--champagne) !important; opacity:0.4; }
+.j-title { font-family:var(--serif); font-size:clamp(28px,3vw,44px); font-weight:300; color:var(--cream); line-height:1.15; margin-bottom:18px; }
+.j-title em { font-style:italic; color:var(--champagne); }
+.j-body { font-size:13px; line-height:1.9; color:rgba(232,217,192,0.45); margin-bottom:28px; max-width:360px; }
+.j-btn { display:inline-flex; align-items:center; gap:10px; padding:15px 34px; background:var(--olive-rich); color:white; text-decoration:none; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; font-weight:500; transition:background 0.2s; }
+.j-btn:hover { background:var(--olive-dark); }
+.j-btn::after { content:'→'; font-size:14px; }
+.price-list { display:flex; flex-direction:column; gap:8px; }
+.p-item { background:rgba(255,255,255,0.05); padding:18px 22px; display:flex; align-items:center; justify-content:space-between; border-left:2px solid transparent; transition:all 0.2s; }
+.p-item:hover { border-left-color:var(--champagne); background:rgba(255,255,255,0.08); }
+.p-item.hl { background:rgba(107,112,72,0.25); border-left-color:var(--olive-rich); }
+.p-label { font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--champagne); margin-bottom:3px; }
+.p-name { font-family:var(--serif); font-size:17px; font-weight:400; color:var(--cream); }
+.p-amt { font-family:var(--serif); font-size:26px; font-weight:300; color:var(--champagne); }
+.p-amt .per { font-family:var(--sans); font-size:11px; color:rgba(232,217,192,0.3); font-weight:300; }
+.p-feat { font-size:11px; color:rgba(232,217,192,0.3); text-align:right; margin-top:2px; }
+
+/* NEWSLETTER */
+.nl-sec { background:var(--cream); padding:72px 64px; text-align:center; border-top:1px solid var(--stone); }
+.nl-ey { justify-content:center; margin-bottom:12px; }
+.nl-ey::before { content:''; display:block; width:32px; height:1px; background:var(--olive-rich); }
+.nl-ey::after { display:none; }
+.nl-title { font-family:var(--serif); font-size:clamp(28px,3.5vw,44px); font-weight:300; color:var(--espresso); margin-bottom:12px; }
+.nl-title em { font-style:italic; }
+.nl-sub { font-size:13px; color:var(--muted); margin-bottom:32px; max-width:400px; margin-left:auto; margin-right:auto; line-height:1.8; }
+.nl-form { display:flex; max-width:420px; margin:0 auto; box-shadow:0 4px 24px rgba(42,32,24,0.08); }
+.nl-input { flex:1; padding:14px 18px; border:1px solid var(--stone); border-right:none; outline:none; font-family:var(--sans); font-size:13px; color:var(--espresso); background:white; }
+.nl-input::placeholder { color:var(--muted); }
+.nl-btn { padding:14px 22px; background:var(--olive-rich); border:none; cursor:pointer; color:white; font-family:var(--sans); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:500; white-space:nowrap; transition:background 0.2s; }
+.nl-btn:hover { background:var(--olive-dark); }
+.nl-note { font-size:11px; color:var(--muted); margin-top:10px; }
+
+/* FOOTER */
+footer { background:var(--dark-warm); padding:72px 64px 36px; }
+.ft-top { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:48px; padding-bottom:52px; border-bottom:1px solid rgba(232,217,192,0.08); margin-bottom:32px; }
+.ft-logo { font-family:var(--serif); font-size:22px; font-weight:400; color:var(--cream); display:block; margin-bottom:8px; }
+.ft-logo span { color:var(--olive); }
+.ft-tagline { font-family:var(--serif); font-size:14px; font-style:italic; color:rgba(232,217,192,0.38); margin-bottom:8px; }
+.ft-thumbs { font-family:var(--sans); font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,217,192,0.2); margin-bottom:16px; font-weight:300; }
+.ft-brand p { font-size:12px; line-height:1.8; color:rgba(232,217,192,0.28); max-width:240px; }
+.ft-col h4 { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--tan); margin-bottom:18px; font-weight:400; }
+.ft-col ul { list-style:none; }
+.ft-col li { margin-bottom:9px; }
+.ft-col a { font-size:13px; color:rgba(232,217,192,0.32); text-decoration:none; transition:color 0.2s; }
+.ft-col a:hover { color:rgba(232,217,192,0.65); }
+.ft-bot { display:flex; justify-content:space-between; align-items:center; }
+.ft-copy { font-size:11px; color:rgba(232,217,192,0.2); }
+.ft-legal { display:flex; gap:20px; list-style:none; }
+.ft-legal a { font-size:11px; color:rgba(232,217,192,0.2); text-decoration:none; transition:color 0.2s; }
+.ft-legal a:hover { color:rgba(232,217,192,0.45); }
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav{padding:0 24px;} .nav-links{display:none;}
+  .sec,.wo-sec,.new-sec,.seas-sec,.join-sec,.nl-sec{padding-left:24px;padding-right:24px;}
+  footer{padding-left:24px;padding-right:24px;}
+  .cat-grid{grid-template-columns:repeat(3,1fr);}
+  .ev-grid{grid-template-columns:1fr;}
+  .biz-grid{grid-template-columns:1fr 1fr;}
+  .seas-grid{grid-template-columns:1fr 1fr;}
+  .join-sec{grid-template-columns:1fr;gap:48px;}
+  .ft-top{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media(max-width:640px){
+  .hero-h1{font-size:44px;}
+  .hero-search{flex-direction:column;}
+  .sf{border-right:none;border-bottom:1px solid var(--stone);}
+  .search-btn{padding:16px;}
+  .cat-grid{grid-template-columns:repeat(2,1fr);}
+  .biz-grid{grid-template-columns:1fr;}
+  .seas-grid{grid-template-columns:1fr 1fr;}
+  .ft-top{grid-template-columns:1fr;}
+  .ft-bot{flex-direction:column;gap:12px;text-align:center;}
+  .ni-num{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">The County <span>Edit</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="whats-on.html">What's On</a></li>
+    <li><a href="#">Guides</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#join" class="nav-cta">List Your Business</a>
+  </div>
+</nav>
+
+
+<!-- ① HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-loc">Rutland &amp; Stamford</div>
+    <h1 class="hero-h1">One place for<br><em>local life.</em></h1>
+    <p class="hero-sub">Trusted local businesses, events, offers &amp; more.</p>
+    <div class="hero-search">
+      <div class="sf">
+        <span class="sf-label">I'm looking for</span>
+        <input class="sf-input" type="text" placeholder="Builder, beauty clinic, caterer…">
+      </div>
+      <div class="sf" style="max-width:200px;">
+        <span class="sf-label">Near</span>
+        <input class="sf-input" type="text" placeholder="Oakham, Stamford…">
+      </div>
+      <button class="search-btn">Search</button>
+    </div>
+    <div class="hero-tags">
+      <a href="#" class="hero-tag">Interiors</a>
+      <a href="#" class="hero-tag">Weddings</a>
+      <a href="#" class="hero-tag">Garden Design</a>
+      <a href="#" class="hero-tag">Beauty &amp; Wellness</a>
+      <a href="#" class="hero-tag">Trades</a>
+      <a href="#" class="hero-tag">What's On</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Explore</div>
+</section>
+
+
+<!-- ② BROWSE CATEGORIES -->
+<section class="sec cat-sec fade-up">
+  <div class="sec-hdr">
+    <div>
+      <div class="eyebrow">Browse by Category</div>
+      <h2 class="sec-title">Find what you're <em>looking for</em></h2>
+    </div>
+    <a href="#" class="see-all">All Categories</a>
+  </div>
+  <div class="cat-grid">
+    <a href="#" class="cat-card"><div class="cat-icon">🏡</div><div class="cat-name">Home &amp; Property</div><div class="cat-count">86 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">🌿</div><div class="cat-name">Garden &amp; Outdoors</div><div class="cat-count">34 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">✨</div><div class="cat-name">Beauty &amp; Wellness</div><div class="cat-count">41 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">🍽️</div><div class="cat-name">Food &amp; Drink</div><div class="cat-count">29 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">🛋️</div><div class="cat-name">Interiors &amp; Styling</div><div class="cat-count">22 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">💐</div><div class="cat-name">Weddings &amp; Events</div><div class="cat-count">38 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">👨‍👩‍👧</div><div class="cat-name">Family &amp; Education</div><div class="cat-count">18 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">🐾</div><div class="cat-name">Pets &amp; Animals</div><div class="cat-count">14 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">🚗</div><div class="cat-name">Automotive</div><div class="cat-count">16 businesses</div></a>
+    <a href="#" class="cat-card"><div class="cat-icon">💼</div><div class="cat-name">Professional Services</div><div class="cat-count">31 businesses</div></a>
+  </div>
+</section>
+
+
+<!-- ③ WHAT'S ON -->
+<section class="wo-sec fade-up" id="whatson">
+  <div class="sec-hdr" style="margin-bottom:32px;">
+    <div>
+      <div class="eyebrow wo-eyebrow">Events &amp; What's On</div>
+      <h2 class="sec-title wo-title">What's happening <em>locally</em></h2>
+    </div>
+    <a href="whats-on.html" class="see-all" style="color:rgba(200,184,154,0.55);">All Events</a>
+  </div>
+
+  <div class="weekend-bar">
+    <div>
+      <div class="wb-text">What's On This Weekend in Rutland &amp; Stamford</div>
+      <div class="wb-sub">Updated every Thursday, never miss a thing</div>
+    </div>
+    <a href="whats-on.html" class="wb-btn">See This Weekend →</a>
+  </div>
+
+  <div class="ev-grid">
+    <a href="https://burghley.co.uk" target="_blank" class="ev-card">
+      <div class="ev-img">
+        <div class="ev-ph ep1"></div>
+        <div class="ev-ov"></div>
+        <div class="ev-date"><span class="ev-day">4</span><span class="ev-mon">Sep</span></div>
+        <div class="ev-feat">Flagship Event</div>
+      </div>
+      <div class="ev-body">
+        <div class="ev-tag">Sport &amp; Country</div>
+        <div class="ev-name">Defender Burghley Horse Trials 2026</div>
+        <div class="ev-meta">
+          <span>4–7 September 2026</span>
+          <span>Burghley House, Stamford</span>
+          <span>Tickets from £25pp</span>
+        </div>
+      </div>
+    </a>
+    <a href="https://nevillholtfestival.com" target="_blank" class="ev-card">
+      <div class="ev-img">
+        <div class="ev-ph ep2"></div>
+        <div class="ev-ov"></div>
+        <div class="ev-date"><span class="ev-day">20</span><span class="ev-mon">Jun</span></div>
+      </div>
+      <div class="ev-body">
+        <div class="ev-tag">Arts &amp; Culture</div>
+        <div class="ev-name">Nevill Holt Opera Summer Festival</div>
+        <div class="ev-meta"><span>From 20th June 2026</span><span>Nevill Holt, Market Harborough</span></div>
+      </div>
+    </a>
+    <a href="https://tolethorpe.co.uk" target="_blank" class="ev-card">
+      <div class="ev-img">
+        <div class="ev-ph ep3"></div>
+        <div class="ev-ov"></div>
+        <div class="ev-date"><span class="ev-day">25</span><span class="ev-mon">Jun</span></div>
+      </div>
+      <div class="ev-body">
+        <div class="ev-tag">Theatre</div>
+        <div class="ev-name">Open Air Theatre Season at Tolethorpe Hall</div>
+        <div class="ev-meta"><span>From 25th June 2026</span><span>Tolethorpe Hall, Rutland</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="wo-footer">
+    <span class="wo-footer-q">"One place to see what's happening locally."</span>
+    <a href="whats-on.html" class="wo-footer-a">See All Events</a>
+  </div>
+</section>
+
+
+<!-- ④ BUSINESSES — COMING SOON -->
+<section class="sec biz-sec fade-up">
+  <div class="sec-hdr">
+    <div>
+      <div class="eyebrow">Trusted Local Businesses</div>
+      <h2 class="sec-title">Discover the best of <em>local life.</em></h2>
+    </div>
+  </div>
+
+  <!-- Coming Soon Banner -->
+  <div style="background:var(--espresso);padding:40px 48px;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;gap:32px;">
+    <div>
+      <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--tan);margin-bottom:10px;font-weight:500;">Launching September 2026</div>
+      <div style="font-family:var(--serif);font-size:clamp(22px,3vw,32px);font-weight:300;color:var(--cream);margin-bottom:10px;">Founding businesses are joining now.</div>
+      <p style="font-size:13px;line-height:1.8;color:rgba(232,217,192,0.5);max-width:520px;">From trusted tradespeople and interior designers to beauty clinics, caterers and garden specialists, The County Edit is building a curated directory of the very best local businesses across Rutland and Stamford. Beautifully presented. Personally reviewed. Launching this autumn.</p>
+    </div>
+    <a href="#join" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--olive-rich);color:white;text-decoration:none;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;white-space:nowrap;flex-shrink:0;transition:background 0.2s;">List Your Business →</a>
+  </div>
+
+  <!-- Category Preview Grid -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-bottom:2px;">
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;position:relative;overflow:hidden;">
+      <div style="font-size:24px;margin-bottom:10px;">🏡</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Home &amp; Property</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">✨</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Beauty &amp; Wellness</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">🌿</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Garden &amp; Outdoors</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">💐</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Weddings &amp; Events</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">🍽️</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Food &amp; Drink</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;">
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">🛋️</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Interiors &amp; Styling</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">🐾</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Pets &amp; Animals</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">💼</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Professional Services</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:white;border:1px solid var(--stone);padding:28px 22px;text-align:center;">
+      <div style="font-size:24px;margin-bottom:10px;">🚗</div>
+      <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);margin-bottom:4px;">Automotive</div>
+      <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--olive-rich);font-weight:500;">Coming Soon</div>
+    </div>
+    <div style="background:var(--olive-rich);border:1px solid var(--olive-rich);padding:28px 22px;text-align:center;">
+      <div style="font-family:var(--serif);font-size:18px;color:white;margin-bottom:8px;font-style:italic;">Are you a local business?</div>
+      <a href="#join" style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.85);text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px;">Join as a Founding Member →</a>
+    </div>
+  </div>
+
+  <!-- Founding member note -->
+  <div style="background:var(--cream);border:1px solid var(--stone);padding:24px 32px;margin-top:2px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="width:40px;height:40px;background:var(--olive-rich);display:flex;align-items:center;justify-content:center;color:white;font-size:16px;flex-shrink:0;">★</div>
+      <div>
+        <div style="font-family:var(--serif);font-size:17px;color:var(--espresso);margin-bottom:2px;">Founding Business Rate — 50% off your first 3 months</div>
+        <div style="font-size:12px;color:var(--muted);">Join before September 2026 and lock in our introductory founding member pricing. Limited spaces available.</div>
+      </div>
+    </div>
+    <a href="#join" style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--olive-rich);text-decoration:none;border-bottom:1px solid rgba(92,112,72,0.3);padding-bottom:3px;white-space:nowrap;flex-shrink:0;">Find Out More →</a>
+  </div>
+</section>
+<!-- ⑤ NEWLY ADDED -->
+<section class="sec new-sec fade-up">
+  <div class="sec-hdr">
+    <div>
+      <div class="eyebrow">Joining the Platform</div>
+      <h2 class="sec-title">Founding businesses <em>coming soon.</em></h2>
+    </div>
+  </div>
+  <div class="new-list">
+    <div class="new-item"><span class="ni-num">01</span><div class="ni-icon">🏡</div><div class="ni-info"><div class="ni-cat">Home &amp; Property</div><div class="ni-name">Builders, Electricians, Plumbers &amp; more</div><div class="ni-loc">Rutland &amp; Stamford</div></div><span class="ni-badge">Coming Sept</span><span class="ni-arrow">→</span></div>
+    <div class="new-item"><span class="ni-num">02</span><div class="ni-icon">✨</div><div class="ni-info"><div class="ni-cat">Beauty &amp; Wellness</div><div class="ni-name">Salons, Clinics, Therapists &amp; more</div><div class="ni-loc">Rutland &amp; Stamford</div></div><span class="ni-badge">Coming Sept</span><span class="ni-arrow">→</span></div>
+    <div class="new-item"><span class="ni-num">03</span><div class="ni-icon">🌿</div><div class="ni-info"><div class="ni-cat">Garden &amp; Outdoors</div><div class="ni-name">Garden Designers, Landscapers &amp; more</div><div class="ni-loc">Rutland &amp; Stamford</div></div><span class="ni-badge">Coming Sept</span><span class="ni-arrow">→</span></div>
+    <div class="new-item"><span class="ni-num">04</span><div class="ni-icon">💐</div><div class="ni-info"><div class="ni-cat">Weddings &amp; Events</div><div class="ni-name">Venues, Florists, Photographers &amp; more</div><div class="ni-loc">Rutland &amp; Stamford</div></div><span class="ni-badge">Coming Sept</span><span class="ni-arrow">→</span></div>
+    <div class="new-item" style="background:var(--cream);border-color:var(--olive-rich);border-left-color:var(--olive-rich);"><span class="ni-num" style="color:var(--olive-rich);">✦</span><div class="ni-icon">⭐</div><div class="ni-info"><div class="ni-cat" style="color:var(--olive-rich);">Are you a local business?</div><div class="ni-name">Join as a Founding Member and be first on the platform</div><div class="ni-loc">50% off your first 3 months, launching September 2026</div></div><a href="#join" style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--olive-rich);text-decoration:none;white-space:nowrap;font-weight:500;">Apply Now →</a></div>
+  </div>
+</section>
+
+
+<!-- ⑥ SEASONAL GUIDES -->
+<section class="sec seas-sec fade-up">
+  <div class="sec-hdr">
+    <div>
+      <div class="eyebrow">Curated Guides</div>
+      <h2 class="sec-title">Seasonal <em>Inspiration</em></h2>
+    </div>
+    <a href="#" class="see-all">All Guides</a>
+  </div>
+  <div class="seas-grid">
+    <a href="#" class="seas-card"><div class="seas-bg sg1"></div><div class="seas-ov"></div><div class="seas-info"><div class="seas-tag">Summer 2025</div><div class="seas-title">Summer Entertaining Guide</div><div class="seas-desc">Caterers, garden specialists &amp; outdoor dining</div></div></a>
+    <a href="#" class="seas-card"><div class="seas-bg sg2"></div><div class="seas-ov"></div><div class="seas-info"><div class="seas-tag">Wedding Season</div><div class="seas-title">The County Wedding Edit</div><div class="seas-desc">Every supplier you need, all in one place</div></div></a>
+    <a href="#" class="seas-card"><div class="seas-bg sg3"></div><div class="seas-ov"></div><div class="seas-info"><div class="seas-tag">Open Gardens</div><div class="seas-title">Rutland Open Gardens 2025</div><div class="seas-desc">Discover the finest private gardens this season</div></div></a>
+    <a href="#" class="seas-card"><div class="seas-bg sg4"></div><div class="seas-ov"></div><div class="seas-info"><div class="seas-tag">Coming Soon</div><div class="seas-title">Christmas in the County</div><div class="seas-desc">Markets, events &amp; festive specialists</div></div></a>
+  </div>
+</section>
+
+
+<!-- ⑦ JOIN / PRICING -->
+<section class="join-sec fade-up" id="join">
+  <div>
+    <div class="eyebrow j-eyebrow">For Local Businesses</div>
+    <h2 class="j-title">Reach the clients<br>who <em>value quality</em></h2>
+    <p class="j-body">Join an exclusive group of trusted local businesses. Beautiful presentation, qualified enquiries, and a professional profile that reflects the standard of your work.</p>
+    <a href="#" class="j-btn">Apply to List Your Business</a>
+  </div>
+  <div>
+    <div class="price-list">
+      <div class="p-item">
+        <div><div class="p-label">Standard</div><div class="p-name">Full Listing</div></div>
+        <div style="text-align:right;"><div class="p-amt">£25<span class="per">/mo</span></div><div class="p-feat">Profile + enquiry access</div></div>
+      </div>
+      <div class="p-item hl">
+        <div><div class="p-label">Most Popular</div><div class="p-name">Featured Listing</div></div>
+        <div style="text-align:right;"><div class="p-amt">£60<span class="per">/mo</span></div><div class="p-feat">Priority + homepage placement</div></div>
+      </div>
+      <div class="p-item">
+        <div><div class="p-label">Premium Partner</div><div class="p-name">Editorial Package</div></div>
+        <div style="text-align:right;"><div class="p-amt" style="font-size:20px;">Custom</div><div class="p-feat">Campaigns + sponsorships</div></div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:rgba(248,245,240,0.22);margin-top:14px;line-height:1.7;">All listings are reviewed before approval. We maintain editorial standards to protect the quality of the platform.</p>
+  </div>
+</section>
+
+
+<!-- ⑧ NEWSLETTER -->
+<section class="nl-sec fade-up">
+  <div class="eyebrow nl-ey">The County Edit, Weekly</div>
+  <h2 class="nl-title">What's On This Weekend<br><em>in your inbox every Thursday</em></h2>
+  <p class="nl-sub">The best local events, new businesses and seasonal guides, delivered beautifully, every week. Never miss a thing.</p>
+  <div class="nl-form">
+    <input class="nl-input" type="email" placeholder="Your email address">
+    <button class="nl-btn">Subscribe</button>
+  </div>
+  <p class="nl-note">No spam. Just the best of local life, every Thursday.</p>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div class="ft-brand">
+      <span class="ft-logo">The County <span>Edit</span></span>
+      <div class="ft-tagline">One place for local life.</div>
+      <p>Trusted local businesses, events, offers &amp; more, beautifully curated for Rutland &amp; Stamford.</p>
+    </div>
+    <div class="ft-col">
+      <h4>Discover</h4>
+      <ul>
+        <li><a href="#">Home &amp; Property</a></li>
+        <li><a href="#">Beauty &amp; Wellness</a></li>
+        <li><a href="#">Weddings &amp; Events</a></li>
+        <li><a href="#">Food &amp; Drink</a></li>
+        <li><a href="#">Garden &amp; Outdoors</a></li>
+        <li><a href="#">All Categories</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>What's On</h4>
+      <ul>
+        <li><a href="#">This Weekend</a></li>
+        <li><a href="#">All Events</a></li>
+        <li><a href="#">Submit an Event</a></li>
+        <li><a href="#">Seasonal Guides</a></li>
+        <li><a href="#">Weekly Newsletter</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Businesses</h4>
+      <ul>
+        <li><a href="#">List Your Business</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Advertise</a></li>
+        <li><a href="#">About The Edit</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <p class="ft-copy">© 2025 The County Edit · Rutland &amp; Stamford · All rights reserved.</p>
+    <ul class="ft-legal"><li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Cookies</a></li></ul>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*60); obs.unobserve(e.target); }
+    });
+  },{threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.hero-tag').forEach(t=>{
+    t.addEventListener('click',e=>{e.preventDefault();document.querySelector('.sf-input').value=t.textContent;});
+  });
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What's On — The County Edit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
